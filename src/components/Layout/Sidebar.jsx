@@ -1,122 +1,52 @@
-import { useState } from "react";
-import {
-  Button,
-  Card,
-  List,
-  ListItem,
-  Dialog,
-  DialogBody,
-  DialogFooter,
-  ListItemPrefix,
-} from "@material-tailwind/react";
-import { NavLink } from "react-router-dom";
-import { RiDashboardFill, RiLogoutBoxRFill } from "react-icons/ri";
-import { IoIosBookmarks } from "react-icons/io";
-import User from "../../localStorages/User";
-import manasik from "../../assets/manasik.svg";
+import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTachometerAlt, faListAlt, faHistory, faUser, faSignOutAlt, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
 const Sidebar = () => {
-  const [open, setOpen] = useState(false);
-
-  const itemSidebar = [
-    {
-      name: "Beranda",
-      icon: RiDashboardFill,
-      path: "/dashboard",
-    },
-    {
-      name: "Data Jemaah",
-      icon: IoIosBookmarks,
-      path: "/jemaah",
-    },
-  ];
-
-  const handleOpen = () => setOpen(!open);
-  const handleLogout = () => {
-    User.Logout();
-    setInterval(() => {
-      window.location.reload();
-    }, 2000);
-  };
+  const sidebarItems = [
+    { href: "/dashboard", icon: faTachometerAlt, label: "Dashboard" },
+    { href: "/dashboard/lokasi", icon: faListAlt, label: "Lokasi" },
+    { href: "/dashboard/kategori", icon: faHistory, label: "Kategori" },
+    { href: "/dashboard/data-center", icon: faUser, label: "Data Center" },
+    { href: "/dashboard/device", icon: faTachometerAlt, label: "Device" },
+    { href: "/dashboard/lisensi", icon: faListAlt, label: "Lisensi" },
+    { href: "/dashboard/project", icon: faHistory, label: "Project" },
+    { href: "/dashboard/aplikasi", icon: faUser, label: "Aplikasi" },
+    { href: "/dashboard/database", icon: faTachometerAlt, label: "Database" },
+    { href: "/dashboard/manajemen-akses", icon: faListAlt, label: "Manajemen Akses" },
+    { href: "/dashboard/pengguna", icon: faHistory, label: "Pengguna" },
+    { href: "/dashboard/lainnya", icon: faUser, label: "Lainnya" }
+];
 
   return (
-    <>
-      <Card className="bg-deep-blue rounded-none hidden lg:flex flex-col justify-between w-64 p-2 border shadow-xl">
-        <div className="overflow-y-auto overflow-x-hidden">
-          <div className="flex mt-3 mb-5">
-            <div className="flex">
-              <img src={manasik} alt="manasik" className="w-10" />
-            </div>
-            <div className="text-md font-bold tracking-wider leading-10">
-              Manasik Tracking
-            </div>
-          </div>
-          <List className="text-sm">
-            {itemSidebar.map((item, index) => (
-              <NavLink
-                key={index}
-                to={item.path}
-                className="sidebar rounded-lg text-light-grey"
-              >
-                <ListItem className="hover:bg-gray-200 active:bg-gray-300 focus:bg-gray-200">
-                  <ListItemPrefix>
-                    <item.icon />
-                  </ListItemPrefix>
-                  <span className="font-bold text-sm">{item.name}</span>
-                </ListItem>
-              </NavLink>
-            ))}
-          </List>
-          <hr />
-          <List>
-            <button onClick={handleOpen} className="text-light-grey">
-              <ListItem className="hover:bg-gray-200 active:bg-gray-300 focus:bg-gray-200">
-                <ListItemPrefix>
-                  <RiLogoutBoxRFill />
-                </ListItemPrefix>
-                <span className="font-bold text-sm tracking-wider ">
-                  Logout
-                </span>
-              </ListItem>
-            </button>
-          </List>
-          <hr />
-        </div>
-      </Card>
-      <Dialog
-        open={open}
-        handler={handleOpen}
-        size="xs"
-        animate={{
-          mount: { scale: 1, y: 0 },
-          unmount: { scale: 0.9, y: -100 },
-        }}
-      >
-        <DialogBody className="relative flex flex-col justify-center items-center gap-2">
-          <div className="absolute top-10 left-10 bg-yellow-500 blur-3xl p-9 rounded-full"></div>
-          <h1 className="text-xl lg:text-2xl font-bold text-main">
-            Peringatan!
-          </h1>
-          {/* <img src="{warning}" className="w-32 lg:w-52" alt="warning logo" /> */}
-          <p className="font-bold text-main text-lg">
-            Apakah yakin ingin keluar?
-          </p>
-        </DialogBody>
-        <DialogFooter>
-          <Button
-            variant="text"
-            color="red"
-            onClick={handleOpen}
-            className="mr-1"
+    <div className="w-64 bg-white border-r border-gray-300 p-6 flex flex-col h-screen">
+      <div className="text-right mb-4">
+        <button id="sideBarHideBtn">
+          <FontAwesomeIcon icon={faTimesCircle} />
+        </button>
+      </div>
+      <p className="uppercase text-xs text-gray-600 mb-4 tracking-wider">Home</p>
+      <nav>
+        {sidebarItems.map((item, index) => (
+          <a
+            key={index}
+            href={item.href}
+            className="flex items-center capitalize font-medium text-base hover:bg-gray-200 p-2 rounded transition ease-in-out duration-500"
           >
-            <span>Batal</span>
-          </Button>
-          <Button onClick={handleLogout}>
-            Oke
-          </Button>
-        </DialogFooter>
-      </Dialog>
-    </>
+            <FontAwesomeIcon icon={item.icon} className="mr-2" />
+            {item.label}
+          </a>
+        ))}
+        <hr className="border-t border-black mb-5 mt-3" />
+        <a
+          onClick={() => {}}
+          className="cursor-pointer mb-3 flex items-center capitalize font-medium text-base text-red-500 hover:bg-red-200 p-2 rounded transition ease-in-out duration-500"
+        >
+          <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
+          Logout
+        </a>
+      </nav>
+    </div>
   );
 };
 
